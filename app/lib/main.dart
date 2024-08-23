@@ -14,14 +14,14 @@ class MainApp extends StatelessWidget{
     // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:SignupPage(),
+      home:const SignupPage(),
 
       routes:{
-        '/user':(context)=>DynamicMain(),
-        '/notifications':(context)=>NotificationPage(),
-        '/call':(context)=>CallPage(),
-        '/signup':(context)=>SignupPage(),
-        '/login':(context)=>LoginPage(),
+        '/user':(context)=>const DynamicMain(),
+        '/notifications':(context)=>const NotificationPage(),
+        '/call':(context)=>const CallPage(),
+        '/signup':(context)=>const SignupPage(),
+        '/login':(context)=>const LoginPage(),
       },
     );
   }

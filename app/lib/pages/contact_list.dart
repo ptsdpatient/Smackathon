@@ -10,7 +10,7 @@ class _ContactList extends State<ContactList>{
   Widget build(BuildContext context) {
     // TODO: implement build
   return(
-        Text("Contact List")
+        const Text("Contact List")
   );
   }
 }

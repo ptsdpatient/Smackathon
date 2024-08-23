@@ -9,6 +9,6 @@ class _Profile extends State<Profile>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-return(Text("Tanishq"));
+return(const Text("Tanishq"));
   }
 }
