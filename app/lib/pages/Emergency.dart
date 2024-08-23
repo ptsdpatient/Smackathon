@@ -43,12 +43,14 @@ class _Emergency extends State<Emergency>{
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Emergency"),
-
-                             Wrap(
-                               children: [Text("One-tap emergency call www w w w w w w w w w",textAlign: TextAlign.left,style:TextStyle(fontSize: 12,color: Colors.black54,),),
-                               ],
-                             )
+                            Padding(padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text("Emergency Call",style:TextStyle(fontSize: 14)),
+                            ),
+                            Container(
+                              width: 240,
+                              child:
+                                Text("One-tap emergency call for immediate assistance.",style : TextStyle(fontSize: 11,color: Colors.black54))
+                            )
                               ],
                         ),
                         Icon(Icons.call, size:40,color:Colors.pink)
@@ -85,8 +87,14 @@ class _Emergency extends State<Emergency>{
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Live Location"),
-                            Text("Track your location "),
+                            Padding(padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text("Live Location",style:TextStyle(fontSize: 14)),
+                            ),
+                            Container(
+                                width: 240,
+                                child:
+                                Text("Track your location in real-time for added safety",style : TextStyle(fontSize: 11,color: Colors.black54))
+                            )
                           ],
                         ),
                         Icon(Icons.location_pin, size:40,color:Colors.pink)
@@ -123,8 +131,14 @@ class _Emergency extends State<Emergency>{
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Audio Recording"),
-                            Text("Record audio for evid"),
+                            Padding(padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text("Audio Recording",style:TextStyle(fontSize: 14)),
+                            ),
+                            Container(
+                                width: 240,
+                                child:
+                                Text("Discreetly record audio for evidence and security.",style : TextStyle(fontSize: 11,color: Colors.black54))
+                            )
                           ],
                         ),
                         Icon(Icons.mic_sharp, size:40,color:Colors.pink)
@@ -161,8 +175,14 @@ class _Emergency extends State<Emergency>{
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Camera Recording"),
-                            Text("Capture photos for docu"),
+                            Padding(padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text("Camera Recording",style:TextStyle(fontSize: 14)),
+                            ),
+                            Container(
+                                width: 240,
+                                child:
+                                Text("Capture photos for documentation and evidence.",style : TextStyle(fontSize: 11,color: Colors.black54))
+                            )
                           ],
                         ),
                         Icon(Icons.camera_alt, size:40,color:Colors.pink)

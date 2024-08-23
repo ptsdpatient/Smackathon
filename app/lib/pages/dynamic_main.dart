@@ -4,6 +4,8 @@ import 'contact_list.dart';
 import 'emergency.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 
 
 
@@ -27,12 +29,15 @@ class UserProfile{
 
 class _DynamicMain extends State<DynamicMain>{
   @override
-  int pageNav=0;
+  int pageNav=0; List<Contact> contacts=[];
   late CircularBottomNavigationController _navigationController;
 
   @override
-  void initState() {
+  Future<void> initState() async {
     super.initState();
+      if (await FlutterContacts.requestPermission()) {
+      contacts = await FlutterContacts.getContacts(withPhoto: true,withAccounts: true,withThumbnail: true);
+      }
     _navigationController = CircularBottomNavigationController(pageNav);
   }
 
@@ -45,12 +50,19 @@ class _DynamicMain extends State<DynamicMain>{
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UserProfile userProfile= UserProfile();
+
+  _callNumber(number) async{//set the number here
+    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
       return Scaffold(
         key:_scaffoldKey,
-        floatingActionButton: FloatingActionButton(onPressed: (){
+        floatingActionButton: pageNav!=2? FloatingActionButton(onPressed: (){
           switch(pageNav){
             case 0:{
               Navigator.of(context).pushNamed('/call');
@@ -64,7 +76,8 @@ class _DynamicMain extends State<DynamicMain>{
           }
 
         },shape: const CircleBorder(),elevation: 5,backgroundColor: Colors.pink
-          ,child:Icon(pageNav==0?Icons.call:(pageNav==1?Icons.person_add:Icons.add),color:Colors.white),),
+          ,child:Icon(pageNav==0?Icons.call:Icons.person_add,color:Colors.white),
+        ):Container(),
         endDrawer:Drawer(
           child: Column(
             children: [
