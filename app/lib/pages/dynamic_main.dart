@@ -5,7 +5,6 @@ import 'emergency.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
 
 
 
@@ -22,22 +21,20 @@ class UserProfile{
   late String email ="username";
   late String adhaar ="username";
   late String version ="username";
-
-
   UserProfile();
 }
 
+
+
+
 class _DynamicMain extends State<DynamicMain>{
   @override
-  int pageNav=0; List<Contact> contacts=[];
+  int pageNav=0;
   late CircularBottomNavigationController _navigationController;
 
   @override
-  Future<void> initState() async {
+  initState()  {
     super.initState();
-      if (await FlutterContacts.requestPermission()) {
-      contacts = await FlutterContacts.getContacts(withPhoto: true,withAccounts: true,withThumbnail: true);
-      }
     _navigationController = CircularBottomNavigationController(pageNav);
   }
 
