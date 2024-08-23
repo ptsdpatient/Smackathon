@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 class ContactList extends StatefulWidget{
@@ -7,11 +8,14 @@ class ContactList extends StatefulWidget{
   _ContactList createState()=> _ContactList();
 }
 
+
 class _ContactList extends State<ContactList>{
   @override
 
   List<Contact>? _contacts=[];
   bool _permissionDenied = false;
+
+
 
   @override
   void initState() {
@@ -63,22 +67,14 @@ class _ContactList extends State<ContactList>{
                 )
             ),
           ),
-           //  ListView.builder(
-           //   itemCount: _contacts?.length,
-           //   itemBuilder: (context,index){
-           //     final Contact? contact = _contacts?[index];
-           //     return _contacts!.isNotEmpty? ListTile(
-           //       title: Text(contact!.name.toString()),
-           //     ) : Container();
-           //   },
-           // )
-          ListView.builder(itemBuilder: (context,index){
-            final Contact contact =_contacts![index];
-            return _contacts!.length>2?ListTile(
-              title : Text(contact.displayName.toString())
-            ):Container();
-          })
+         SingleChildScrollView(
+           physics: BouncingScrollPhysics(),
+           child: Column(
+             children: [
 
+             ],
+           )
+         )
 
         ],
       )
