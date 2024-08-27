@@ -26,13 +26,25 @@ class _LoginPage extends State<LoginPage>{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset("images/icon.jpg",width:200),
-                    const SizedBox(height:15),
-                    const Text("s a f e g u a r d", style:TextStyle(color:Colors.orange,fontSize: 20)),
-                    const Text("Mobile Service", style:TextStyle(color:Colors.orange,fontSize: 10)),
-                    const SizedBox(height:10)
+                    const SizedBox(height:20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+                          child: Image.asset("images/icon.jpg",width:100),
+                        ),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("s a f e g u a r d", style:TextStyle(color:Colors.orange,fontSize: 17)),
+                            Text("Mobile Service", style:TextStyle(color:Colors.orange,fontSize: 10)),
+                          ],
+                        )
+                      ],
+                    ),
+                    const SizedBox(height:20),
                   ],
                 ),
                 Column(

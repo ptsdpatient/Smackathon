@@ -15,8 +15,6 @@ class _ContactList extends State<ContactList>{
   List<Contact>? _contacts=[];
   bool _permissionDenied = false;
 
-
-
   @override
   void initState() {
     super.initState();
@@ -29,12 +27,14 @@ class _ContactList extends State<ContactList>{
     super.dispose();
   }
 
-  Future _fetchContacts() async {
+  Future<List<Contact>?> _fetchContacts() async {
     if (!await FlutterContacts.requestPermission(readonly: true)) {
       setState(() => _permissionDenied = true);
+      return _contacts;
     } else {
       final contacts = await FlutterContacts.getContacts(withPhoto: true,withThumbnail: true);
       setState(() => _contacts = contacts);
+      return _contacts;
     }
   }
 
@@ -45,17 +45,9 @@ class _ContactList extends State<ContactList>{
       Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal:10,vertical: 5),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+            decoration: const BoxDecoration(
                 color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color:Colors.black26,
-                    offset:Offset(0.5, 0.5),
-                    spreadRadius: 0.5,
-                    blurRadius: 0.5,
-                  )
-                ]
             ),
             child: const TextField(
                 cursorColor: Colors.pink,
@@ -67,15 +59,56 @@ class _ContactList extends State<ContactList>{
                 )
             ),
           ),
-         SingleChildScrollView(
-           physics: BouncingScrollPhysics(),
-           child: Column(
-             children: [
 
-             ],
-           )
-         )
+           FutureBuilder<List<Contact>?>(
+             future: _fetchContacts(),
+             builder: (context, snapshot) {
+               final List<Contact>? contacts= snapshot.data;
+               if(snapshot.data==null){
+                 return Container(
+                   width: 200,
+                   height: 200,
+                   child:const Center(
+                     child:CircularProgressIndicator(
+                       backgroundColor: Colors.white,
+                       color: Colors.pink,
+                     ),
+                   )
+                 );
+               }else {
+                 return ListView.builder(
+                 shrinkWrap: true,
+                 physics: const BouncingScrollPhysics(),
 
+                 scrollDirection: Axis.vertical,
+                 itemCount: contacts?.length,
+                 itemBuilder: (context,index){
+                   final Contact? contact = contacts?[index];
+                   return Padding(
+                     padding:const EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                     child:Container(
+                       padding: const EdgeInsets.all(20),
+                       decoration: BoxDecoration(
+                         borderRadius: BorderRadius.circular(10),
+                         color: Colors.pinkAccent[300],
+                         boxShadow: const [
+                           BoxShadow(
+                             color: Colors.pinkAccent,
+                             offset: Offset(0.5, 0.5),
+                           )
+                         ]
+                       ),
+                       child: SizedBox(
+                         width: 300,
+                         child: Text(contact!.displayName,style: const TextStyle(color: Colors.white),),
+                       ),
+                     )
+                   );
+                 },
+               );
+               }
+             }
+           ),
         ],
       )
   );

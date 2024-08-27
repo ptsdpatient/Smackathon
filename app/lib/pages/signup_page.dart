@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatefulWidget{
@@ -7,132 +9,289 @@ class SignupPage extends StatefulWidget{
 }
 
 class _SignupPage extends State<SignupPage>{
+  late int currentStep=0;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+
       body:Center(
         child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset("images/icon.jpg",width:200),
-                    const SizedBox(height:15),
-                    const Text("s a f e g u a r d", style:TextStyle(color:Colors.orange,fontSize: 20)),
-                    const Text("Mobile Service", style:TextStyle(color:Colors.orange,fontSize: 10)),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+                          child: Image.asset("images/icon.jpg",width:100),
+                        ),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("s a f e g u a r d", style:TextStyle(color:Colors.orange,fontSize: 17,fontWeight: FontWeight.bold)),
+                            Text("Mobile Service", style:TextStyle(color:Colors.orange,fontSize: 11)),
+                          ],
+                        )
+                      ],
+                    ),
+                    Text("Sign Up", style:TextStyle(color:Colors.black87,fontSize: 20)),
                   ],
                 ),
                 Column(
                   children: [
-                    const Padding(padding: EdgeInsets.symmetric(vertical: 20),
-                      child:Text("Sign Up",style : TextStyle(
-                        fontSize: 25,
-                      )),
-                    ),
-                    Padding(padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 10),
-                        child:Container(
-                          padding: const EdgeInsets.symmetric(horizontal:10,vertical: 5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color:Colors.black26,
-                                  offset:Offset(0.5, 0.5),
-                                  spreadRadius: 0.5,
-                                  blurRadius: 0.5,
-                                )
-                              ]
+                    Theme(
+                      data: ThemeData(
+                        colorScheme: ColorScheme.light(
+                          primary: Colors.pink,
+                        ),
+
+                      ),
+                        child: Stepper(currentStep: currentStep,
+                            margin: EdgeInsets.zero,
+                            onStepTapped: (int stepNumber)=>{
+                              setState(() {
+                                currentStep=stepNumber;
+                              })
+                            },
+                            onStepContinue: ()=>{
+                              setState(() {
+                                //validate user here!
+                                if(currentStep<2)currentStep++;
+                                else loginUser();
+                              })
+                            },
+                            onStepCancel: ()=>{
+                              setState(() {
+                                if(currentStep>0)currentStep--;
+                              })
+                            },
+                            steps: [
+                          Step(
+                            title: Text("User Details"),
+                            subtitle: Container(
+                                width: 275,
+                                child: Text("Fill out your username and name.",style:TextStyle(color: Colors.black54)),
+                              ),
+                            isActive: currentStep==0,
+                            state: currentStep==0?StepState.indexed:StepState.complete,
+
+                            content: Column(
+                              children: [
+                                Padding(padding: const EdgeInsets.only(top: 10),
+                                    child:Container(
+                                      padding: const EdgeInsets.symmetric(horizontal:5,vertical: 0),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Colors.white,
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color:Colors.black26,
+                                              offset:Offset(0.5, 0.5),
+                                              spreadRadius: 0.5,
+                                              blurRadius: 0.5,
+                                            )
+                                          ]
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(left:10),
+                                        child: TextField(
+                                            cursorColor: Colors.pink,
+                                            decoration:InputDecoration(
+                                                border:InputBorder.none ,
+                                                labelText: "Username",
+                                                labelStyle:TextStyle(color: Colors.black54)
+                                            )
+                                        ),
+                                      ),
+                                    )
+                                ),Padding(padding: const EdgeInsets.only(top:10),
+                                    child:Container(
+                                      padding: const EdgeInsets.symmetric(horizontal:5,vertical: 0),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Colors.white,
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color:Colors.black26,
+                                              offset:Offset(0.5, 0.5),
+                                              spreadRadius: 0.5,
+                                              blurRadius: 0.5,
+                                            )
+                                          ]
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(left:10),
+                                        child: TextField(
+                                            cursorColor: Colors.pink,
+                                            decoration:InputDecoration(
+                                                border:InputBorder.none ,
+                                                labelText: "Full name",
+                                                labelStyle:TextStyle(color: Colors.black54)
+                                            )
+                                        ),
+                                      ),
+                                    )
+                                ),
+                              ],
+                            )
                           ),
-                          child: const TextField(
-                              cursorColor: Colors.pink,
-                              decoration:InputDecoration(
-                                  icon:Padding(padding: EdgeInsets.symmetric(horizontal: 5),child: Icon(Icons.account_circle,size:35,color:Colors.pink),),
-                                  border:InputBorder.none ,
-                                  labelText: "username/email",
-                                  labelStyle:TextStyle(color: Colors.black54)
-                              )),
-                        )
-                    ),
-                    Padding(padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 10),
-                        child:Container(
-                          padding: const EdgeInsets.symmetric(horizontal:10,vertical: 5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color:Colors.black26,
-                                  offset:Offset(0.5, 0.5),
-                                  spreadRadius: 0.5,
-                                  blurRadius: 0.5,
-                                )
-                              ]
-                          ),
-                          child: const TextField(
-                              cursorColor: Colors.pink,
-                              decoration:InputDecoration(
-                                  icon:Padding(padding: EdgeInsets.symmetric(horizontal: 5),child: Icon(Icons.password_rounded,size:35,color:Colors.pink),),
-                                  border:InputBorder.none ,
-                                  labelText: "password",
-                                  labelStyle:TextStyle(color: Colors.black54)
+
+
+                          Step(
+                              title: Text("Email and Mobile"),
+                              subtitle: Container(
+                                width: 275,
+                                child: Text("write your email id and mobile number",style:TextStyle(color: Colors.black54)),
+                              ),
+                              isActive: currentStep==1,
+                              state: currentStep==2?StepState.complete:StepState.indexed,
+                              content:Column(
+                                children: [
+                                  Padding(padding: const EdgeInsets.only(top: 10),
+                                      child:Container(
+                                        padding: const EdgeInsets.symmetric(horizontal:5,vertical: 0),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: Colors.white,
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color:Colors.black26,
+                                                offset:Offset(0.5, 0.5),
+                                                spreadRadius: 0.5,
+                                                blurRadius: 0.5,
+                                              )
+                                            ]
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(left:10),
+                                          child: TextField(
+                                              cursorColor: Colors.pink,
+                                              decoration:InputDecoration(
+                                                  border:InputBorder.none ,
+                                                  labelText: "Email id",
+                                                  labelStyle:TextStyle(color: Colors.black54)
+                                              )
+                                          ),
+                                        ),
+                                      )
+                                  ),Padding(padding: const EdgeInsets.only(top:10),
+                                      child:Container(
+                                        padding: const EdgeInsets.symmetric(horizontal:5,vertical: 0),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: Colors.white,
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color:Colors.black26,
+                                                offset:Offset(0.5, 0.5),
+                                                spreadRadius: 0.5,
+                                                blurRadius: 0.5,
+                                              )
+                                            ]
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(left:10),
+                                          child: TextField(
+                                              cursorColor: Colors.pink,
+                                              decoration:InputDecoration(
+                                                  border:InputBorder.none ,
+                                                  labelText: "Mobile number",
+                                                  labelStyle:TextStyle(color: Colors.black54)
+                                              )
+                                          ),
+                                        ),
+                                      )
+                                  ),
+                                ],
                               )
+
                           ),
-                        )
-                    ),
-                    Padding(padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 5),
-                        child:Container(
-                          padding: const EdgeInsets.symmetric(horizontal:10,vertical: 5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color:Colors.black26,
-                                  offset:Offset(0.5, 0.5),
-                                  spreadRadius: 0.5,
-                                  blurRadius: 0.5,
-                                )
-                              ]
-                          ),
-                          child: const TextField(
-                              cursorColor: Colors.pink,
-                              decoration:InputDecoration(
-                                  icon:Padding(padding: EdgeInsets.symmetric(horizontal: 5),child: Icon(Icons.password_rounded,size:35,color:Colors.pink),),
-                                  border:InputBorder.none ,
-                                  labelText: "confirm password",
-                                  labelStyle:TextStyle(color: Colors.black54)
-                              )
-                          ),
-                        )
-                    ),
-                    Padding(padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 10),
-                        child:Container(
-                            padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 40),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.pink,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color:Colors.black26,
-                                    offset:Offset(0.5, 0.5),
-                                    spreadRadius: 0.5,
-                                    blurRadius: 0.5,
-                                  )
-                                ]
+                          Step(
+                            title: Text("Authentication"),
+                            subtitle: Container(
+                              width: 275,
+                              child: Text("Pick a strong password.",style:TextStyle(color: Colors.black54)),
                             ),
-                            child: Text("Sign Up!",style:TextStyle(color:Colors.white,fontSize: 14)),
-                        )
+                            isActive: currentStep==2,
+                            state: StepState.indexed,
+                            content:Column(
+                            children: [
+                              Padding(padding: const EdgeInsets.only(top: 10),
+                                  child:Container(
+                                    padding: const EdgeInsets.symmetric(horizontal:5,vertical: 0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color:Colors.black26,
+                                            offset:Offset(0.5, 0.5),
+                                            spreadRadius: 0.5,
+                                            blurRadius: 0.5,
+                                          )
+                                        ]
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(left:10),
+                                      child: TextField(
+                                          cursorColor: Colors.pink,
+                                          decoration:InputDecoration(
+                                              border:InputBorder.none ,
+                                              labelText: "Password",
+                                              labelStyle:TextStyle(color: Colors.black54)
+                                          )
+                                      ),
+                                    ),
+                                  )
+                              ),Padding(padding: const EdgeInsets.only(top:10),
+                                  child:Container(
+                                    padding: const EdgeInsets.symmetric(horizontal:5,vertical: 0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color:Colors.black26,
+                                            offset:Offset(0.5, 0.5),
+                                            spreadRadius: 0.5,
+                                            blurRadius: 0.5,
+                                          )
+                                        ]
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(left:10),
+                                      child: TextField(
+                                          cursorColor: Colors.pink,
+                                          decoration:InputDecoration(
+                                              border:InputBorder.none ,
+                                              labelText: "Confirm Password",
+                                              labelStyle:TextStyle(color: Colors.black54)
+                                          )
+                                      ),
+                                    ),
+                                  )
+                              ),
+                            ],
+                          )
+                          ),
+
+
+                        ]),
                     ),
-                    Text("Already have an account?"),
+
+
+                    const Padding(padding: EdgeInsets.only(top:10),
+                      child: Text("Already have an account?"),
+                    ),
                     TextButton(onPressed: (){
                       Navigator.of(context).pushNamed("/login");
-                      }, child: Text("Log In"))
+                      }, child: const Text("Log In",style: TextStyle(color:Colors.pink),))
                   ],
                 ),
               ],
@@ -140,5 +299,10 @@ class _SignupPage extends State<SignupPage>{
         ),
       )
     );
+  }
+
+  void loginUser() {
+
+
   }
 }

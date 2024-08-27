@@ -1,12 +1,12 @@
+import 'dart:async';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:women_safety/pages/profile.dart';
 import 'contact_list.dart';
 import 'emergency.dart';
-import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
-import 'package:circular_bottom_navigation/tab_item.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-
-
 
 class DynamicMain extends StatefulWidget{
   const DynamicMain({super.key});
@@ -30,18 +30,15 @@ class UserProfile{
 class _DynamicMain extends State<DynamicMain>{
   @override
   int pageNav=0;
-  late CircularBottomNavigationController _navigationController;
 
   @override
   initState()  {
     super.initState();
-    _navigationController = CircularBottomNavigationController(pageNav);
   }
 
   @override
   void dispose() {
     // Dispose the controller to avoid memory leaks
-    _navigationController.dispose();
     super.dispose();
   }
 
@@ -54,11 +51,13 @@ class _DynamicMain extends State<DynamicMain>{
 
 
 
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
       return Scaffold(
         key:_scaffoldKey,
+        backgroundColor: Colors.white,
         floatingActionButton: pageNav!=2? FloatingActionButton(onPressed: (){
           switch(pageNav){
             case 0:{
@@ -73,53 +72,88 @@ class _DynamicMain extends State<DynamicMain>{
           }
 
         },shape: const CircleBorder(),elevation: 5,backgroundColor: Colors.pink
-          ,child:Icon(pageNav==0?Icons.call:Icons.person_add,color:Colors.white),
+          ,child:Icon(pageNav==0?Icons.done:Icons.person_add,color:Colors.white),
         ):Container(),
         endDrawer:Drawer(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              DrawerHeader(child: Column(
+              Column(
                 children: [
-                  Icon(Icons.account_circle,size : 100,color:Colors.pink),
-                  Text("Welcome User",style: TextStyle(fontSize: 15),),
+                  DrawerHeader(decoration: BoxDecoration(
+
+                  ),child: Column(
+                    children: [
+                      Icon(Icons.account_circle,size : 100,color:Colors.pink),
+                      Text("Welcome User",style: TextStyle(fontSize: 15),),
+                    ],
+                  ),),
+                  SizedBox(height:20),
+                  ListTile(title: Text("Name"),subtitle: Text(userProfile.name)),
+                  ListTile(title: Text("UID"),subtitle: Text(userProfile.id.toString())),
+                  ListTile(title: Text("adhaar"),subtitle: Text(userProfile.adhaar)),
+                  ListTile(title: Text("email"),subtitle: Text(userProfile.email)),
+                  ListTile(title: Text("mobile"),subtitle: Text(userProfile.mobile)),
+                  ListTile(title: Text("Version"),subtitle: Text(userProfile.name)),
                 ],
-              ),),
-              SizedBox(height:20),
-              ListTile(title: Text("Name"),subtitle: Text(userProfile.name)),
-              ListTile(title: Text("UID"),subtitle: Text(userProfile.id.toString())),
-              ListTile(title: Text("adhaar"),subtitle: Text(userProfile.adhaar)),
-              ListTile(title: Text("email"),subtitle: Text(userProfile.email)),
-              ListTile(title: Text("mobile"),subtitle: Text(userProfile.mobile)),
-              ListTile(title: Text("Version"),subtitle: Text(userProfile.name)),
+              ),
+              Column(
+                children: [
+
+                     ElevatedButton(onPressed: (){
+                       Navigator.of(context).pop();
+                     },
+
+                         style: ElevatedButton.styleFrom(
+                           backgroundColor: Colors.pink,
+                           foregroundColor: Colors.white,
+                           shape: RoundedRectangleBorder(
+                             borderRadius: BorderRadius.zero
+                           )
+                         ),
+                         child:
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),child: Row(mainAxisAlignment: MainAxisAlignment.center,children: [
+
+                        Text("Logout",style: TextStyle(color:Colors.white),),Padding(padding: EdgeInsets.symmetric(horizontal: 10),child:  Icon(Icons.logout,color: Colors.white,))
+
+                      ]
+                        ,)
+                      ,)
+
+                  )
+                ],
+              )
             ],
   
           ),
         ),
 
-        bottomNavigationBar: CircularBottomNavigation(
-          [
-            TabItem(Icons.home, "Home", Colors.pink,circleStrokeColor: Colors.pink,labelStyle : const TextStyle(color:Colors.white )),
-            TabItem(Icons.contacts, "Contacts", Colors.pink,circleStrokeColor: Colors.pink,labelStyle : const TextStyle(color:Colors.white )),
-            TabItem(Icons.settings, "Settings", Colors.pink,circleStrokeColor: Colors.pink,labelStyle : const TextStyle(color:Colors.white )),
+        bottomNavigationBar: CurvedNavigationBar(
+          index: 0,
+          animationCurve: Curves.fastOutSlowIn,
+          color:Colors.pink,
+          backgroundColor: Colors.transparent,
+          buttonBackgroundColor: Colors.pink,
+          items: const [
+            Padding(padding: EdgeInsets.symmetric(vertical: 0),child: Icon(Icons.home,size:40,color: Colors.white,),),
+            Padding(padding: EdgeInsets.symmetric(vertical: 0),child:Icon(Icons.contacts,size:40,color: Colors.white,)),
+            Padding(padding: EdgeInsets.symmetric(vertical: 0),child:Icon(Icons.settings,size:40,color: Colors.white,)),
           ],
-          controller: _navigationController,
-          barHeight: 60,
-          circleSize: 70,
-          barBackgroundColor: Colors.pink,
-          animationDuration: const Duration(milliseconds: 300),
-          normalIconColor: Colors.white60,
-          selectedCallback: (int? indexOfItem) {
+          onTap: (index){
             setState(() {
-                pageNav=indexOfItem!;
-              });
+              pageNav=index;
+            });
           },
+          animationDuration: const Duration(milliseconds: 300),
+
         ),
 
 
         body: CustomScrollView(
           slivers: [
-            SliverAppBar(
+            SliverAppBar.medium(
               backgroundColor: Colors.pink,
+
               leading:IconButton(onPressed: (){Navigator.of(context).pushNamed("/notifications");}, icon:const Padding(padding:EdgeInsets.symmetric(horizontal: 10),child:Icon(Icons.notifications_active_outlined,color:Colors.white,size:35))),
               automaticallyImplyLeading: false,
               title:Text(pageNav==0?"Emergency":(pageNav==1?"Contact List":"Profile"),style: const TextStyle(color:Colors.white),),
